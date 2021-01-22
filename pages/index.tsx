@@ -5,8 +5,7 @@ import Link from 'next/link'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 
-//import Amplify from 'aws-amplify'
-//import awsmobile from '../src/aws-exports'
+import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { ListTodosQuery } from '../src/graphql/API'
@@ -17,13 +16,22 @@ import Todo from '../src/component/Todo'
 import { useRecoilState } from 'recoil'
 import todosState from '../src/store/todos'
 
-//Amplify.configure(awsmobile)
+Amplify.configure({
+    "aws_project_region": process.env.project_region,
+    "aws_cognito_identity_pool_id": process.env.aws_cognito_identity_pool_id,
+    "aws_cognito_region": process.env.aws_cognito_region,
+    "aws_user_pools_id": process.env.user_pools_id,
+    "aws_user_pools_web_client_id": process.env.user_pools_web_client_id,
+    "oauth": {},
+    "aws_appsync_graphqlEndpoint": process.env.appsync_graphqlEndpoint,
+    "aws_appsync_region": process.env.appsync_region,
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+})
 
 const TodosIndex = () => {
   const [todos, setTodos] = useRecoilState(todosState)
   console.log("hello")
   console.log(process.env.customKey)
-  console.log(process.env.region)
 
   useEffect(() => {
     const asyncFunc = async () => {
