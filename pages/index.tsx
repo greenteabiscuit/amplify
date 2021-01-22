@@ -30,8 +30,6 @@ Amplify.configure({
 
 const TodosIndex = () => {
   const [todos, setTodos] = useRecoilState(todosState)
-  console.log("hello")
-  console.log(process.env.customKey)
 
   useEffect(() => {
     const asyncFunc = async () => {

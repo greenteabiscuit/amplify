@@ -25,7 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
     <>
       <RecoilRoot>
         <Head>
-          <title>Create Next App</title>
+          <title>Up</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <ThemeProvider theme={theme}>
