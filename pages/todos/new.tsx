@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 
 import Amplify from 'aws-amplify'
-import awsconfig from '../../src/aws-exports'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { CreateTodoMutation } from '../../src/graphql/API'
@@ -14,7 +13,17 @@ import { createTodo } from '../../src/graphql/mutations'
 
 import Form from '../../src/component/Form'
 
-Amplify.configure(awsconfig)
+Amplify.configure({
+    "aws_project_region": process.env.project_region,
+    "aws_cognito_identity_pool_id": process.env.aws_cognito_identity_pool_id,
+    "aws_cognito_region": process.env.aws_cognito_region,
+    "aws_user_pools_id": process.env.user_pools_id,
+    "aws_user_pools_web_client_id": process.env.user_pools_web_client_id,
+    "oauth": {},
+    "aws_appsync_graphqlEndpoint": process.env.appsync_graphqlEndpoint,
+    "aws_appsync_region": process.env.appsync_region,
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+})
 
 const TodosNew = () => {
   const router = useRouter()
