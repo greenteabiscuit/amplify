@@ -5,8 +5,8 @@ import Link from 'next/link'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 
-import Amplify from 'aws-amplify'
-import awsconfig from '../src/aws-exports'
+// import Amplify from 'aws-amplify'
+// import awsmobile from '../src/aws-exports'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { ListTodosQuery } from '../src/graphql/API'
@@ -17,7 +17,7 @@ import Todo from '../src/component/Todo'
 import { useRecoilState } from 'recoil'
 import todosState from '../src/store/todos'
 
-Amplify.configure(awsconfig)
+// Amplify.configure(awsmobile)
 
 const TodosIndex = () => {
   const [todos, setTodos] = useRecoilState(todosState)
