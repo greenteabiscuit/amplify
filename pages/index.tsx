@@ -8,13 +8,14 @@ import Grid from '@material-ui/core/Grid'
 import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
-import { ListTodosQuery } from '../src/graphql/API'
-import { listTodos } from '../src/graphql/queries'
+import { ListTodosQuery, ListAlbumsQuery } from '../src/graphql/API'
+import { listTodos, listAlbums } from '../src/graphql/queries'
 
 import Todo from '../src/component/Todo'
 
 import { useRecoilState } from 'recoil'
 import todosState from '../src/store/todos'
+import albumState from '../src/store/albums'
 
 Amplify.configure({
     "aws_project_region": process.env.project_region,
@@ -30,6 +31,7 @@ Amplify.configure({
 
 const TodosIndex = () => {
   const [todos, setTodos] = useRecoilState(todosState)
+  const [albums, setAlbums] = useRecoilState(albumState)
 
   useEffect(() => {
     const asyncFunc = async () => {
@@ -37,6 +39,11 @@ const TodosIndex = () => {
         graphqlOperation(listTodos)
       )) as GraphQLResult<ListTodosQuery>
       setTodos(result.data.listTodos.items)
+
+      const albumResult = (await API.graphql(
+        graphqlOperation(listAlbums)
+      )) as GraphQLResult<ListAlbumsQuery>
+      setAlbums(albumResult.data.listAlbums.items)
     }
     asyncFunc()
   }, [])
