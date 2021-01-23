@@ -88,14 +88,47 @@ export type DeleteTodoInput = {
   id?: string | null,
 };
 
-export type ModelTodoFilterInput = {
-  id?: ModelIDInput | null,
+export type CreateAlbumInput = {
+  id?: string | null,
+  name: string,
+};
+
+export type ModelAlbumConditionInput = {
   name?: ModelStringInput | null,
-  completed?: ModelBooleanInput | null,
-  timestamp?: ModelIntInput | null,
-  and?: Array< ModelTodoFilterInput | null > | null,
-  or?: Array< ModelTodoFilterInput | null > | null,
-  not?: ModelTodoFilterInput | null,
+  and?: Array< ModelAlbumConditionInput | null > | null,
+  or?: Array< ModelAlbumConditionInput | null > | null,
+  not?: ModelAlbumConditionInput | null,
+};
+
+export type UpdateAlbumInput = {
+  id: string,
+  name?: string | null,
+};
+
+export type DeleteAlbumInput = {
+  id?: string | null,
+};
+
+export type CreatePhotoInput = {
+  id?: string | null,
+  albumId: string,
+  bucket: string,
+  fullsize: PhotoS3InfoInput,
+  thumbnail: PhotoS3InfoInput,
+};
+
+export type PhotoS3InfoInput = {
+  key: string,
+  width: number,
+  height: number,
+};
+
+export type ModelPhotoConditionInput = {
+  albumId?: ModelIDInput | null,
+  bucket?: ModelStringInput | null,
+  and?: Array< ModelPhotoConditionInput | null > | null,
+  or?: Array< ModelPhotoConditionInput | null > | null,
+  not?: ModelPhotoConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -113,6 +146,51 @@ export type ModelIDInput = {
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
 };
+
+export type UpdatePhotoInput = {
+  id: string,
+  albumId?: string | null,
+  bucket?: string | null,
+  fullsize?: PhotoS3InfoInput | null,
+  thumbnail?: PhotoS3InfoInput | null,
+};
+
+export type DeletePhotoInput = {
+  id?: string | null,
+};
+
+export type ModelTodoFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  completed?: ModelBooleanInput | null,
+  timestamp?: ModelIntInput | null,
+  and?: Array< ModelTodoFilterInput | null > | null,
+  or?: Array< ModelTodoFilterInput | null > | null,
+  not?: ModelTodoFilterInput | null,
+};
+
+export type ModelAlbumFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  and?: Array< ModelAlbumFilterInput | null > | null,
+  or?: Array< ModelAlbumFilterInput | null > | null,
+  not?: ModelAlbumFilterInput | null,
+};
+
+export type ModelPhotoFilterInput = {
+  id?: ModelIDInput | null,
+  albumId?: ModelIDInput | null,
+  bucket?: ModelStringInput | null,
+  and?: Array< ModelPhotoFilterInput | null > | null,
+  or?: Array< ModelPhotoFilterInput | null > | null,
+  not?: ModelPhotoFilterInput | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type CreateTodoMutationVariables = {
   input: CreateTodoInput,
@@ -165,6 +243,177 @@ export type DeleteTodoMutation = {
   } | null,
 };
 
+export type CreateAlbumMutationVariables = {
+  input: CreateAlbumInput,
+  condition?: ModelAlbumConditionInput | null,
+};
+
+export type CreateAlbumMutation = {
+  createAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type UpdateAlbumMutationVariables = {
+  input: UpdateAlbumInput,
+  condition?: ModelAlbumConditionInput | null,
+};
+
+export type UpdateAlbumMutation = {
+  updateAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type DeleteAlbumMutationVariables = {
+  input: DeleteAlbumInput,
+  condition?: ModelAlbumConditionInput | null,
+};
+
+export type DeleteAlbumMutation = {
+  deleteAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type CreatePhotoMutationVariables = {
+  input: CreatePhotoInput,
+  condition?: ModelPhotoConditionInput | null,
+};
+
+export type CreatePhotoMutation = {
+  createPhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type UpdatePhotoMutationVariables = {
+  input: UpdatePhotoInput,
+  condition?: ModelPhotoConditionInput | null,
+};
+
+export type UpdatePhotoMutation = {
+  updatePhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type DeletePhotoMutationVariables = {
+  input: DeletePhotoInput,
+  condition?: ModelPhotoConditionInput | null,
+};
+
+export type DeletePhotoMutation = {
+  deletePhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
 export type GetTodoQueryVariables = {
   id: string,
 };
@@ -203,6 +452,128 @@ export type ListTodosQuery = {
   } | null,
 };
 
+export type GetAlbumQueryVariables = {
+  id: string,
+};
+
+export type GetAlbumQuery = {
+  getAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type ListAlbumsQueryVariables = {
+  filter?: ModelAlbumFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListAlbumsQuery = {
+  listAlbums:  {
+    __typename: "ModelAlbumConnection",
+    items:  Array< {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetPhotoQueryVariables = {
+  id: string,
+};
+
+export type GetPhotoQuery = {
+  getPhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type ListPhotosQueryVariables = {
+  filter?: ModelPhotoFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPhotosQuery = {
+  listPhotos:  {
+    __typename: "ModelPhotoConnection",
+    items:  Array< {
+      __typename: "Photo",
+      id: string,
+      albumId: string,
+      bucket: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type ListPhotosByAlbumQueryVariables = {
+  albumId?: string | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelPhotoFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPhotosByAlbumQuery = {
+  listPhotosByAlbum:  {
+    __typename: "ModelPhotoConnection",
+    items:  Array< {
+      __typename: "Photo",
+      id: string,
+      albumId: string,
+      bucket: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type OnCreateTodoSubscription = {
   onCreateTodo:  {
     __typename: "Todo",
@@ -236,5 +607,170 @@ export type OnDeleteTodoSubscription = {
     timestamp: number,
     createdAt: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateAlbumSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreateAlbumSubscription = {
+  onCreateAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnUpdateAlbumSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdateAlbumSubscription = {
+  onUpdateAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnDeleteAlbumSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeleteAlbumSubscription = {
+  onDeleteAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnCreatePhotoSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreatePhotoSubscription = {
+  onCreatePhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnUpdatePhotoSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdatePhotoSubscription = {
+  onUpdatePhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnDeletePhotoSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeletePhotoSubscription = {
+  onDeletePhoto:  {
+    __typename: "Photo",
+    id: string,
+    albumId: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
+    bucket: string,
+    fullsize:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    thumbnail:  {
+      __typename: "PhotoS3Info",
+      key: string,
+      width: number,
+      height: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
   } | null,
 };
