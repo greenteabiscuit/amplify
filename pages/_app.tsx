@@ -11,36 +11,36 @@ import { RecoilRoot } from 'recoil'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((_theme) => ({
-  root: {
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
+    root: {
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+    },
 }))
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-  const classes = useStyles()
+    const classes = useStyles()
 
-  return (
-    <>
-      <RecoilRoot>
-        <Head>
-          <title>Up</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <div className={classes.root}>
-            <CssBaseline />
-            <Header />
-            <Container>
-              <Component {...pageProps} />
-            </Container>
-            <Footer />
-          </div>
-        </ThemeProvider>
-      </RecoilRoot>
-    </>
-  )
+    return (
+        <>
+            <RecoilRoot>
+                <Head>
+                    <title>Up</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <ThemeProvider theme={theme}>
+                    <div className={classes.root}>
+                        <CssBaseline />
+                        <Header />
+                        <Container>
+                            <Component {...pageProps} />
+                        </Container>
+                        <Footer />
+                    </div>
+                </ThemeProvider>
+            </RecoilRoot>
+        </>
+    )
 }
 
 export default MyApp

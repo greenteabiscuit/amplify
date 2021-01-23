@@ -18,41 +18,36 @@ import { useRecoilState } from 'recoil'
 import todosState from '../../src/store/todos'
 
 const Todo = ({ todo }) => {
-  const [todos, setTodos] = useRecoilState(todosState)
+    const [todos, setTodos] = useRecoilState(todosState)
 
-  const onArchive = async () => {
-    (await API.graphql(
-      graphqlOperation(deleteTodo, {
-        input: {
-          id: todo.id,
-        },
-      })
-    )) as GraphQLResult<DeleteTodoMutation>
-    setTodos(todos.filter((item) => item.id !== todo.id))
-  }
-  return (
-    <Grid item md={6}>
-      <Card>
-        <CardContent>
-          <Typography variant="h5" component="h2">
-            <Link href={`/todos/${todo.id}`}>{todo.name}</Link>
-          </Typography>
-          <Typography color="textSecondary">
-            created at {new Date(todo.timestamp * 1000).toLocaleString()}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <FormControlLabel
-            control={<Checkbox color="primary" />}
-            label="Done"
-          />
-          <Button variant="contained" color="secondary" onClick={onArchive}>
-            Archive
-          </Button>
-        </CardActions>
-      </Card>
-    </Grid>
-  )
+    const onArchive = async () => {
+        const del = (await API.graphql(
+            graphqlOperation(deleteTodo, { input: { id: todo.id } }),
+        )) as GraphQLResult<DeleteTodoMutation>
+        // todo: ここのdelあとで消す
+        console.log(del)
+        setTodos(todos.filter((item) => item.id !== todo.id))
+    }
+    return (
+        <Grid item md={6}>
+            <Card>
+                <CardContent>
+                    <Typography variant="h5" component="h2">
+                        <Link href={`/todos/${todo.id}`}>{todo.name}</Link>
+                    </Typography>
+                    <Typography color="textSecondary">
+                        created at {new Date(todo.timestamp * 1000).toLocaleString()}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <FormControlLabel control={<Checkbox color="primary" />} label="Done" />
+                    <Button variant="contained" color="secondary" onClick={onArchive}>
+                        Archive
+                    </Button>
+                </CardActions>
+            </Card>
+        </Grid>
+    )
 }
 
 export default Todo

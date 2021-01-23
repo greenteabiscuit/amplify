@@ -18,58 +18,54 @@ import todosState from '../src/store/todos'
 import albumState from '../src/store/albums'
 
 Amplify.configure({
-    "aws_project_region": process.env.project_region,
-    "aws_cognito_identity_pool_id": process.env.aws_cognito_identity_pool_id,
-    "aws_cognito_region": process.env.aws_cognito_region,
-    "aws_user_pools_id": process.env.user_pools_id,
-    "aws_user_pools_web_client_id": process.env.user_pools_web_client_id,
-    "oauth": {},
-    "aws_appsync_graphqlEndpoint": process.env.appsync_graphqlEndpoint,
-    "aws_appsync_region": process.env.appsync_region,
-    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+    aws_project_region: process.env.project_region,
+    aws_cognito_identity_pool_id: process.env.aws_cognito_identity_pool_id,
+    aws_cognito_region: process.env.aws_cognito_region,
+    aws_user_pools_id: process.env.user_pools_id,
+    aws_user_pools_web_client_id: process.env.user_pools_web_client_id,
+    oauth: {},
+    aws_appsync_graphqlEndpoint: process.env.appsync_graphqlEndpoint,
+    aws_appsync_region: process.env.appsync_region,
+    aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
 })
 
 const TodosIndex = () => {
-  const [todos, setTodos] = useRecoilState(todosState)
-  const [albums, setAlbums] = useRecoilState(albumState)
+    const [todos, setTodos] = useRecoilState(todosState)
+    const [albums, setAlbums] = useRecoilState(albumState)
 
-  useEffect(() => {
-    const asyncFunc = async () => {
-      const result = (await API.graphql(
-        graphqlOperation(listTodos)
-      )) as GraphQLResult<ListTodosQuery>
-      setTodos(result.data.listTodos.items)
+    useEffect(() => {
+        const asyncFunc = async () => {
+            const result = (await API.graphql(graphqlOperation(listTodos))) as GraphQLResult<ListTodosQuery>
+            setTodos(result.data.listTodos.items)
 
-      const albumResult = (await API.graphql(
-        graphqlOperation(listAlbums)
-      )) as GraphQLResult<ListAlbumsQuery>
-      setAlbums(albumResult.data.listAlbums.items)
-    }
-    asyncFunc()
-  }, [])
+            const albumResult = (await API.graphql(graphqlOperation(listAlbums))) as GraphQLResult<ListAlbumsQuery>
+            setAlbums(albumResult.data.listAlbums.items)
+        }
+        asyncFunc()
+    }, [])
 
-  return (
-    <>
-      <AmplifySignOut />
-      <Grid container direction="column" spacing={2}>
-        <Grid item md={6}>
-          <h1>Todos</h1>
-        </Grid>
-        <Grid item md={6}>
-          <Link href="/todos/new">
-            <Button component="a" variant="contained" color="primary">
-              New
-            </Button>
-          </Link>
-        </Grid>
-      </Grid>
-      <Grid container direction="column" spacing={2}>
-        {todos.map((todo) => (
-          <Todo key={todo.id} todo={todo} />
-        ))}
-      </Grid>
-    </>
-  )
+    return (
+        <>
+            <AmplifySignOut />
+            <Grid container direction="column" spacing={2}>
+                <Grid item md={6}>
+                    <h1>Todos</h1>
+                </Grid>
+                <Grid item md={6}>
+                    <Link href="/todos/new">
+                        <Button component="a" variant="contained" color="primary">
+                            New
+                        </Button>
+                    </Link>
+                </Grid>
+            </Grid>
+            <Grid container direction="column" spacing={2}>
+                {todos.map((todo) => (
+                    <Todo key={todo.id} todo={todo} />
+                ))}
+            </Grid>
+        </>
+    )
 }
 
 export default withAuthenticator(TodosIndex)
