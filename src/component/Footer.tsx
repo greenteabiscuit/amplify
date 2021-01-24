@@ -18,7 +18,7 @@ const Copyright = () => {
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
                 <Link href="/">
-                    <a>Todolist</a>
+                    <a>Up</a>
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}

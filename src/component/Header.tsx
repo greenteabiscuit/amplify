@@ -23,7 +23,7 @@ const Header = () => {
                     <Grid container direction="row" alignItems="center">
                         <CheckCircleIcon className={classes.icon} />
                         <Typography variant="h6" color="inherit" noWrap>
-                            TodoList
+                            Up
                         </Typography>
                     </Grid>
                 </Container>
