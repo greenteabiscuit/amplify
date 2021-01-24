@@ -62,6 +62,11 @@ const AlbumsShow = () => {
                 <Grid item md={6}>
                     <Typography variant="h2">{album.name}</Typography>
                 </Grid>
+                <Grid item md={6}>
+                    <Typography color="textSecondary">
+                        created at {new Date(album.timestamp * 1000).toLocaleString()}
+                    </Typography>
+                </Grid>
             </Grid>
         </>
     )
