@@ -2,8 +2,8 @@ import React, { FC } from 'react'
 import Link from 'next/link'
 
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
-import { DeleteTodoMutation } from '../../src/graphql/API'
-import { deleteTodo } from '../../src/graphql/mutations'
+import { DeleteAlbumMutation } from '../../src/graphql/API'
+import { deleteAlbum } from '../../src/graphql/mutations'
 
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -15,33 +15,33 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 
 import { useRecoilState } from 'recoil'
-import todosState from '../../src/store/todos'
+import albumState from '../../src/store/albums'
 
-//todo: todoの型を入れる
+//album: albumの型を入れる
 type Props = {
-    todo: any
+    album: any
 }
 
-const Todo: FC<Props> = ({ todo }) => {
-    const [todos, setTodos] = useRecoilState(todosState)
+const AlbumList: FC<Props> = ({ album }) => {
+    const [albums, setAlbums] = useRecoilState(albumState)
 
     const onArchive = async () => {
         const del = (await API.graphql(
-            graphqlOperation(deleteTodo, { input: { id: todo.id } }),
-        )) as GraphQLResult<DeleteTodoMutation>
-        // todo: ここのdelあとで消す
+            graphqlOperation(deleteAlbum, { input: { id: album.id } }),
+        )) as GraphQLResult<DeleteAlbumMutation>
+        // album: ここのdelあとで消す
         console.log(del)
-        setTodos(todos.filter((item) => item.id !== todo.id))
+        setAlbums(albums.filter((item) => item.id !== album.id))
     }
     return (
         <Grid item md={6}>
             <Card>
                 <CardContent>
                     <Typography variant="h5" component="h2">
-                        <Link href={`/todos/${todo.id}`}>{todo.name}</Link>
+                        <Link href={`/albums/${album.id}`}>{album.name}</Link>
                     </Typography>
                     <Typography color="textSecondary">
-                        created at {new Date(todo.timestamp * 1000).toLocaleString()}
+                        created at {new Date(album.timestamp * 1000).toLocaleString()}
                     </Typography>
                 </CardContent>
                 <CardActions>
@@ -55,4 +55,4 @@ const Todo: FC<Props> = ({ todo }) => {
     )
 }
 
-export default Todo
+export default AlbumList

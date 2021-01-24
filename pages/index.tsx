@@ -10,8 +10,10 @@ import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import { ListTodosQuery, ListAlbumsQuery } from '../src/graphql/API'
 import { listTodos, listAlbums } from '../src/graphql/queries'
+import { onCreateAlbum } from '../src/graphql/subscriptions'
 
 import Todo from '../src/component/Todo'
+import AlbumList from '../src/component/AlbumList'
 
 import { useRecoilState } from 'recoil'
 import todosState from '../src/store/todos'
@@ -62,6 +64,11 @@ const TodosIndex = () => {
             <Grid container direction="column" spacing={2}>
                 {todos.map((todo) => (
                     <Todo key={todo.id} todo={todo} />
+                ))}
+            </Grid>
+            <Grid container direction="column" spacing={2}>
+                {albums.map((album) => (
+                    <AlbumList key={album.id} album={album} />
                 ))}
             </Grid>
         </>
