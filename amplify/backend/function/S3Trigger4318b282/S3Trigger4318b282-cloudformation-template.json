@@ -4,6 +4,14 @@
   "Parameters": {
     "env": {
       "Type": "String"
+    },
+    "apimyappGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apimyappGraphQLAPIIdOutput"
+    },
+    "apimyappGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apimyappGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -47,6 +55,15 @@
           "Variables": {
             "ENV": {
               "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "API_MYAPP_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apimyappGraphQLAPIIdOutput"
+            },
+            "API_MYAPP_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apimyappGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -141,6 +158,59 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apimyappGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }
