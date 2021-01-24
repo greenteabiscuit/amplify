@@ -138,6 +138,11 @@ export const listPhotosByAlbum = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        thumbnail {
+          key
+          width
+          height
+        }
       }
       nextToken
     }

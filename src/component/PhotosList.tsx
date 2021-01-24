@@ -16,7 +16,7 @@ const PhotosList = memo(({ photos }: props) => {
         return props.photos.map((photo) => (
             <S3Image
                 key={photo.thumbnail.key}
-                imgKey={'resized/' + photos.thumbnail.key.replace(/.+resized\//, '')}
+                imgKey={'resized/' + photo.thumbnail.key.replace(/.+resized\//, '')}
                 level="private"
                 style={{ display: 'inline-block', paddingRight: '5px' }}
             />
