@@ -12,6 +12,7 @@ import { CreateTodoMutation } from '../../src/graphql/API'
 import { createTodo } from '../../src/graphql/mutations'
 
 import Form from '../../src/component/Form'
+import NewAlbum from '../../src/component/NewAlbum'
 
 Amplify.configure({
     aws_project_region: process.env.project_region,
@@ -56,6 +57,7 @@ const TodosNew = () => {
                 </Grid>
             </Grid>
             <Form onSubmit={onSubmit} />
+            <NewAlbum />
         </>
     )
 }
