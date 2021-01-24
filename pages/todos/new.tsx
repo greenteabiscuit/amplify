@@ -42,8 +42,6 @@ const TodosNew = () => {
     }
 
     const onSubmitAlbum = async (newAlbum) => {
-        console.log('create album')
-        console.log(newAlbum)
         const albumMutation = (await API.graphql(
             graphqlOperation(createAlbum, {
                 input: {
