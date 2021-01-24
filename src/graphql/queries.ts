@@ -33,21 +33,6 @@ export const listTodos = /* GraphQL */ `
     }
   }
 `;
-export const getAlbum = /* GraphQL */ `
-  query GetAlbum($id: ID!) {
-    getAlbum(id: $id) {
-      id
-      name
-      photos {
-        nextToken
-      }
-      timestamp
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const listAlbums = /* GraphQL */ `
   query ListAlbums(
     $filter: ModelAlbumFilterInput
@@ -67,19 +52,26 @@ export const listAlbums = /* GraphQL */ `
     }
   }
 `;
+export const getAlbum = /* GraphQL */ `
+  query GetAlbum($id: ID!) {
+    getAlbum(id: $id) {
+      id
+      name
+      timestamp
+      createdAt
+      updatedAt
+      owner
+      photos {
+        nextToken
+      }
+    }
+  }
+`;
 export const getPhoto = /* GraphQL */ `
   query GetPhoto($id: ID!) {
     getPhoto(id: $id) {
       id
       albumId
-      album {
-        id
-        name
-        timestamp
-        createdAt
-        updatedAt
-        owner
-      }
       bucket
       fullsize {
         key
@@ -93,6 +85,14 @@ export const getPhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        timestamp
+        createdAt
+        updatedAt
+        owner
+      }
       owner
     }
   }

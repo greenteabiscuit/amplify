@@ -9,9 +9,12 @@ import Typography from '@material-ui/core/Typography'
 import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import { GetAlbumQuery } from '../../src/graphql/API'
-import { getAlbum } from '../../src/graphql/queries'
+import { GetAlbumQuery, ListPhotosByAlbumQuery } from '../../src/graphql/API'
+import { getAlbum, listPhotosByAlbum } from '../../src/graphql/queries'
 import S3ImageUpload from '../../src/component/S3ImageUpload'
+import PhotosList from '../../src/component/PhotosList'
+import albumState from '../../src/store/albums'
+import { useRecoilState } from 'recoil'
 
 //import awsmobile from '../../src/aws-exports'
 
@@ -32,17 +35,50 @@ Amplify.configure({
 //Amplify.configure(awsmobile)
 
 const AlbumsShow = () => {
-    const [album, setAlbum]: [GetAlbumQuery['getAlbum'], React.Dispatch<{}>] = useState(null)
+    const [photos, setPhotos] = useState([])
+    const [fetchingPhotos, setFetchingPhotos] = useState(false)
+    const [nextPhotosToken, setNextPhotosToken] = useState(null)
+    const [album, setAlbum] = useRecoilState(albumState)
     const router = useRouter()
     const { id } = router.query
+    const asyncFunc = async () => {
+        const result = (await API.graphql(graphqlOperation(getAlbum, { id }))) as GraphQLResult<GetAlbumQuery>
+        console.log(result)
+        setAlbum(result[0])
+        console.log('album')
+        console.log(album)
+        //fetchNextPhotos()
+    }
+    useEffect(() => {
+        asyncFunc()
+        console.log('album2')
+        console.log(album)
+    }, [])
 
     useEffect(() => {
-        const asyncFunc = async () => {
-            const result = (await API.graphql(graphqlOperation(getAlbum, { id }))) as GraphQLResult<GetAlbumQuery>
-            setAlbum(result.data.getAlbum)
+        if (album != null) {
+            fetchNextPhotos()
         }
-        asyncFunc()
-    }, [])
+    }, [album])
+
+    const fetchNextPhotos = async () => {
+        const FETCH_LIMIT = 20
+        setFetchingPhotos(true)
+        const queryArgs = {
+            albumId: album[0].id,
+            limit: FETCH_LIMIT,
+            nextToken: nextPhotosToken,
+        }
+        if (!queryArgs.nextToken) delete queryArgs.nextToken
+        const results = (await API.graphql(
+            graphqlOperation(listPhotosByAlbum, queryArgs),
+        )) as GraphQLResult<ListPhotosByAlbumQuery>
+        console.log('results data of fetchnextphotos')
+        console.log(results.data)
+        setPhotos((p) => p.concat(results.data.listPhotosByAlbum.items))
+        setNextPhotosToken(results.data.listPhotosByAlbum.nextToken)
+        setFetchingPhotos(false)
+    }
 
     return !album ? (
         <></>
@@ -75,7 +111,8 @@ const AlbumsShow = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <S3ImageUpload albumId={album.id} />
+            <S3ImageUpload albumId={album[0].id} />
+            <PhotosList photos={photos} />
         </>
     )
 }

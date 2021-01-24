@@ -114,6 +114,7 @@ export type DeleteAlbumInput = {
 
 export type CreatePhotoInput = {
   id?: string | null,
+  owner?: string | null,
   albumId: string,
   bucket: string,
   fullsize: PhotoS3InfoInput,
@@ -257,14 +258,14 @@ export type CreateAlbumMutation = {
     __typename: "Album",
     id: string,
     name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
     timestamp: number,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -278,14 +279,14 @@ export type UpdateAlbumMutation = {
     __typename: "Album",
     id: string,
     name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
     timestamp: number,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -299,14 +300,14 @@ export type DeleteAlbumMutation = {
     __typename: "Album",
     id: string,
     name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
     timestamp: number,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
@@ -320,15 +321,6 @@ export type CreatePhotoMutation = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -344,6 +336,15 @@ export type CreatePhotoMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
@@ -358,15 +359,6 @@ export type UpdatePhotoMutation = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -382,6 +374,15 @@ export type UpdatePhotoMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
@@ -396,15 +397,6 @@ export type DeletePhotoMutation = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -420,6 +412,15 @@ export type DeletePhotoMutation = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
@@ -462,26 +463,6 @@ export type ListTodosQuery = {
   } | null,
 };
 
-export type GetAlbumQueryVariables = {
-  id: string,
-};
-
-export type GetAlbumQuery = {
-  getAlbum:  {
-    __typename: "Album",
-    id: string,
-    name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
-    timestamp: number,
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null,
-};
-
 export type ListAlbumsQueryVariables = {
   filter?: ModelAlbumFilterInput | null,
   limit?: number | null,
@@ -504,6 +485,26 @@ export type ListAlbumsQuery = {
   } | null,
 };
 
+export type GetAlbumQueryVariables = {
+  id: string,
+};
+
+export type GetAlbumQuery = {
+  getAlbum:  {
+    __typename: "Album",
+    id: string,
+    name: string,
+    timestamp: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
 export type GetPhotoQueryVariables = {
   id: string,
 };
@@ -513,15 +514,6 @@ export type GetPhotoQuery = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -537,6 +529,15 @@ export type GetPhotoQuery = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
@@ -624,7 +625,7 @@ export type OnDeleteTodoSubscription = {
 };
 
 export type OnCreateAlbumSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnCreateAlbumSubscription = {
@@ -632,19 +633,19 @@ export type OnCreateAlbumSubscription = {
     __typename: "Album",
     id: string,
     name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
     timestamp: number,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
 export type OnUpdateAlbumSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnUpdateAlbumSubscription = {
@@ -652,19 +653,19 @@ export type OnUpdateAlbumSubscription = {
     __typename: "Album",
     id: string,
     name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
     timestamp: number,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
 export type OnDeleteAlbumSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnDeleteAlbumSubscription = {
@@ -672,19 +673,19 @@ export type OnDeleteAlbumSubscription = {
     __typename: "Album",
     id: string,
     name: string,
-    photos:  {
-      __typename: "ModelPhotoConnection",
-      nextToken: string | null,
-    } | null,
     timestamp: number,
     createdAt: string,
     updatedAt: string,
     owner: string | null,
+    photos:  {
+      __typename: "ModelPhotoConnection",
+      nextToken: string | null,
+    } | null,
   } | null,
 };
 
 export type OnCreatePhotoSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnCreatePhotoSubscription = {
@@ -692,15 +693,6 @@ export type OnCreatePhotoSubscription = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -716,12 +708,21 @@ export type OnCreatePhotoSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
 
 export type OnUpdatePhotoSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnUpdatePhotoSubscription = {
@@ -729,15 +730,6 @@ export type OnUpdatePhotoSubscription = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -753,12 +745,21 @@ export type OnUpdatePhotoSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
 
 export type OnDeletePhotoSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnDeletePhotoSubscription = {
@@ -766,15 +767,6 @@ export type OnDeletePhotoSubscription = {
     __typename: "Photo",
     id: string,
     albumId: string,
-    album:  {
-      __typename: "Album",
-      id: string,
-      name: string,
-      timestamp: number,
-      createdAt: string,
-      updatedAt: string,
-      owner: string | null,
-    } | null,
     bucket: string,
     fullsize:  {
       __typename: "PhotoS3Info",
@@ -790,6 +782,15 @@ export type OnDeletePhotoSubscription = {
     },
     createdAt: string,
     updatedAt: string,
+    album:  {
+      __typename: "Album",
+      id: string,
+      name: string,
+      timestamp: number,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null,
     owner: string | null,
   } | null,
 };
