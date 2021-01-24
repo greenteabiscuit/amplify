@@ -3,7 +3,7 @@
 	API_MYAPP_GRAPHQLAPIIDOUTPUT
 	ENV
 	REGION
-Amplify Params - DO NOT EDIT *//* Amplify Params - DO NOT EDIT
+Amplify Params - DO NOT EDIT */ /* Amplify Params - DO NOT EDIT
 You can access the following resource attributes as environment variables from your Lambda function
 var environment = process.env.ENV
 var region = process.env.REGION
@@ -177,7 +177,7 @@ exports.handler = async (event, context, callback) => {
     console.log('Received S3 event:', JSON.stringify(event, null, 2))
 
     client = new AWSAppSyncClient({
-        url: process.env.API_PHOTOALBUMS_GRAPHQLAPIENDPOINTOUTPUT,
+        url: process.env.API_MYAPP_GRAPHQLAPIENDPOINTOUTPUT,
         region: process.env.REGION,
         auth: {
             type: AUTH_TYPE.AWS_IAM,
