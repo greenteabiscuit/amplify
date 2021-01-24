@@ -11,6 +11,7 @@ import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { GetAlbumQuery } from '../../src/graphql/API'
 import { getAlbum } from '../../src/graphql/queries'
+import S3ImageUpload from '../../src/component/S3ImageUpload'
 
 Amplify.configure({
     aws_project_region: process.env.project_region,
@@ -22,6 +23,8 @@ Amplify.configure({
     aws_appsync_graphqlEndpoint: process.env.appsync_graphqlEndpoint,
     aws_appsync_region: process.env.appsync_region,
     aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+    aws_user_files_s3_bucket: process.env.user_files_s3_bucket,
+    aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
 const AlbumsShow = () => {
@@ -68,6 +71,7 @@ const AlbumsShow = () => {
                     </Typography>
                 </Grid>
             </Grid>
+            <S3ImageUpload />
         </>
     )
 }

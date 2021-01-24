@@ -22,6 +22,8 @@ Amplify.configure({
     aws_appsync_graphqlEndpoint: process.env.appsync_graphqlEndpoint,
     aws_appsync_region: process.env.appsync_region,
     aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+    aws_user_files_s3_bucket: process.env.user_files_s3_bucket,
+    aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
 const TodosShow = () => {

@@ -9,5 +9,7 @@ module.exports = {
         appsync_graphqlEndpoint: process.env.appsync_graphqlEndpoint,
         appsync_region: process.env.appsync_region,
         appsync_authenticationType: process.env.appsync_authenticationType,
+        user_files_s3_bucket: process.env.user_files_s3_bucket,
+        user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
     },
 }
