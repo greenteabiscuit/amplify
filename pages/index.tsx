@@ -36,8 +36,6 @@ Amplify.configure({
 const TodosIndex = () => {
     const [todos, setTodos] = useRecoilState(todosState)
     const [albums, setAlbums] = useRecoilState(albumState)
-    console.log(process.env.cognito_identity_pool_id)
-    console.log(process.env.cognito_region)
     useEffect(() => {
         const asyncFunc = async () => {
             const result = (await API.graphql(graphqlOperation(listTodos))) as GraphQLResult<ListTodosQuery>

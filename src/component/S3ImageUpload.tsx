@@ -12,9 +12,7 @@ const S3ImageUpload = (props) => {
 
     const uploadFile = async (file) => {
         const fileName = 'upload/' + uuid()
-        console.log('filename: ' + fileName)
         const user = await Auth.currentAuthenticatedUser()
-        console.log(user)
 
         const result = await Storage.vault.put(fileName, file, {
             metadata: {
@@ -32,7 +30,6 @@ const S3ImageUpload = (props) => {
         for (let i = 0; i < e.target.files.length; i++) {
             files.push(e.target.files.item(i))
         }
-        console.log('before promise')
         await Promise.all(files.map((f) => uploadFile(f)))
 
         setUploading(false)

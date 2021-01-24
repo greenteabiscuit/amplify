@@ -71,7 +71,7 @@ const AlbumsShow = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <S3ImageUpload />
+            <S3ImageUpload albumId={album.id} />
         </>
     )
 }
