@@ -13,6 +13,8 @@ import { GetAlbumQuery } from '../../src/graphql/API'
 import { getAlbum } from '../../src/graphql/queries'
 import S3ImageUpload from '../../src/component/S3ImageUpload'
 
+//import awsmobile from '../../src/aws-exports'
+
 Amplify.configure({
     aws_project_region: process.env.project_region,
     aws_cognito_identity_pool_id: process.env.aws_cognito_identity_pool_id,
@@ -26,6 +28,8 @@ Amplify.configure({
     aws_user_files_s3_bucket: process.env.user_files_s3_bucket,
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
+
+//Amplify.configure(awsmobile)
 
 const AlbumsShow = () => {
     const [album, setAlbum]: [GetAlbumQuery['getAlbum'], React.Dispatch<{}>] = useState(null)
