@@ -45,6 +45,8 @@ const TodosIndex = () => {
         }
         asyncFunc()
     }, [])
+    console.log(todos)
+    console.log(albums)
 
     return (
         <>

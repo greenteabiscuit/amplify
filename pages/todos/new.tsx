@@ -42,10 +42,13 @@ const TodosNew = () => {
     }
 
     const onSubmitAlbum = async (newAlbum) => {
-        const todoMutation = (await API.graphql(
+        console.log('create album')
+        console.log(newAlbum)
+        const albumMutation = (await API.graphql(
             graphqlOperation(createAlbum, {
                 input: {
                     ...newAlbum,
+                    timestamp: Math.floor(Date.now() / 1000),
                 },
             }),
         )) as GraphQLResult<CreateAlbumMutation>

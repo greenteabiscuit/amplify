@@ -41,6 +41,7 @@ export const getAlbum = /* GraphQL */ `
       photos {
         nextToken
       }
+      timestamp
       createdAt
       updatedAt
       owner
@@ -57,6 +58,7 @@ export const listAlbums = /* GraphQL */ `
       items {
         id
         name
+        timestamp
         createdAt
         updatedAt
         owner
@@ -73,6 +75,7 @@ export const getPhoto = /* GraphQL */ `
       album {
         id
         name
+        timestamp
         createdAt
         updatedAt
         owner

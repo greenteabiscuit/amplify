@@ -9,6 +9,7 @@ type Album @model @auth(rules: [{allow: owner}]) {
     id: ID!
     name: String!
     photos: [Photo] @connection(keyName: "byAlbum", fields: ["id"])
+    timestamp: AWSTimestamp!
 }
 
 type Photo @model 

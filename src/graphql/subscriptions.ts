@@ -46,6 +46,7 @@ export const onCreateAlbum = /* GraphQL */ `
       photos {
         nextToken
       }
+      timestamp
       createdAt
       updatedAt
       owner
@@ -60,6 +61,7 @@ export const onUpdateAlbum = /* GraphQL */ `
       photos {
         nextToken
       }
+      timestamp
       createdAt
       updatedAt
       owner
@@ -74,6 +76,7 @@ export const onDeleteAlbum = /* GraphQL */ `
       photos {
         nextToken
       }
+      timestamp
       createdAt
       updatedAt
       owner
@@ -88,6 +91,7 @@ export const onCreatePhoto = /* GraphQL */ `
       album {
         id
         name
+        timestamp
         createdAt
         updatedAt
         owner
@@ -117,6 +121,7 @@ export const onUpdatePhoto = /* GraphQL */ `
       album {
         id
         name
+        timestamp
         createdAt
         updatedAt
         owner
@@ -146,6 +151,7 @@ export const onDeletePhoto = /* GraphQL */ `
       album {
         id
         name
+        timestamp
         createdAt
         updatedAt
         owner
