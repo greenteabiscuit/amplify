@@ -8,11 +8,10 @@ import Button from '@material-ui/core/Button'
 import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import { CreateTodoMutation } from '../../src/graphql/API'
-import { createTodo } from '../../src/graphql/mutations'
+import { CreateTodoMutation, CreateAlbumMutation } from '../../src/graphql/API'
+import { createTodo, createAlbum } from '../../src/graphql/mutations'
 
 import Form from '../../src/component/Form'
-import NewAlbum from '../../src/component/NewAlbum'
 
 Amplify.configure({
     aws_project_region: process.env.project_region,
@@ -30,7 +29,7 @@ const TodosNew = () => {
     const router = useRouter()
 
     const onSubmit = async (newTodo) => {
-        (await API.graphql(
+        const todoMutation = (await API.graphql(
             graphqlOperation(createTodo, {
                 input: {
                     ...newTodo,
@@ -39,6 +38,17 @@ const TodosNew = () => {
                 },
             }),
         )) as GraphQLResult<CreateTodoMutation>
+        router.push('/')
+    }
+
+    const onSubmitAlbum = async (newAlbum) => {
+        const todoMutation = (await API.graphql(
+            graphqlOperation(createAlbum, {
+                input: {
+                    ...newAlbum,
+                },
+            }),
+        )) as GraphQLResult<CreateAlbumMutation>
         router.push('/')
     }
 
@@ -57,7 +67,7 @@ const TodosNew = () => {
                 </Grid>
             </Grid>
             <Form onSubmit={onSubmit} />
-            <NewAlbum />
+            <Form onSubmit={onSubmitAlbum} />
         </>
     )
 }
