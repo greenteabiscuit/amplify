@@ -4,11 +4,12 @@ type Album = {
     createdAt: string
     id: string
     name: string
-    owner: string
+    owner: string | null
     timestamp: number
     updatedAt: string
 }
 
+/*
 const initialSample: Album = {
     createdAt: '',
     id: '',
@@ -17,7 +18,8 @@ const initialSample: Album = {
     timestamp: 0,
     updatedAt: '',
 }
-
+*/
+const initialSample = {} as Album
 const aState = atom({
     key: 'album',
     default: initialSample,

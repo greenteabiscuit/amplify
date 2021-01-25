@@ -13,7 +13,7 @@ import { GetAlbumQuery, ListPhotosByAlbumQuery } from '../../src/graphql/API'
 import { getAlbum, listPhotosByAlbum } from '../../src/graphql/queries'
 import S3ImageUpload from '../../src/component/S3ImageUpload'
 import PhotosList from '../../src/component/PhotosList'
-import albumState from '../../src/store/albums'
+import aState from '../../src/store/album'
 import { useRecoilState } from 'recoil'
 
 //import awsmobile from '../../src/aws-exports'
@@ -38,14 +38,16 @@ const AlbumsShow = () => {
     const [photos, setPhotos] = useState([])
     const [fetchingPhotos, setFetchingPhotos] = useState(false)
     const [nextPhotosToken, setNextPhotosToken] = useState(null)
-    const [album, setAlbum] = useRecoilState(albumState)
+    const [album, setAlbum] = useRecoilState(aState)
     const router = useRouter()
     const { id } = router.query
     const asyncFunc = async () => {
         const result = (await API.graphql(graphqlOperation(getAlbum, { id }))) as GraphQLResult<GetAlbumQuery>
-        setAlbum(result[0])
-        //console.log('album')
-        //console.log(album)
+        console.log('result')
+        console.log(result)
+        setAlbum(result.data.getAlbum)
+        console.log('album')
+        console.log(album)
         if (album != null) {
             fetchNextPhotos()
         }
@@ -67,7 +69,7 @@ const AlbumsShow = () => {
         const FETCH_LIMIT = 20
         setFetchingPhotos(true)
         const queryArgs = {
-            albumId: album[0].id,
+            albumId: album.id,
             limit: FETCH_LIMIT,
             nextToken: nextPhotosToken,
         }
@@ -113,7 +115,7 @@ const AlbumsShow = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <S3ImageUpload albumId={album[0].id} />
+            <S3ImageUpload albumId={album.id} />
             <PhotosList photos={photos} />
         </>
     )
