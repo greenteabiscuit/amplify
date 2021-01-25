@@ -41,48 +41,28 @@ const AlbumsShow = () => {
     const [album, setAlbum] = useRecoilState(aState)
     const router = useRouter()
     const { id } = router.query
-    const asyncFunc = async () => {
-        const result = (await API.graphql(graphqlOperation(getAlbum, { id }))) as GraphQLResult<GetAlbumQuery>
-        console.log('result')
-        console.log(result)
-        setAlbum(result.data.getAlbum)
-        console.log('album')
-        console.log(album)
-        if (album != null) {
-            fetchNextPhotos()
-        }
-        //fetchNextPhotos()
-    }
+
     useEffect(() => {
+        const asyncFunc = async () => {
+            const result = (await API.graphql(graphqlOperation(getAlbum, { id }))) as GraphQLResult<GetAlbumQuery>
+            setAlbum(result.data.getAlbum)
+            const FETCH_LIMIT = 20
+            setFetchingPhotos(true)
+            const queryArgs = {
+                albumId: result.data.getAlbum.id,
+                limit: FETCH_LIMIT,
+                nextToken: nextPhotosToken,
+            }
+            if (!queryArgs.nextToken) delete queryArgs.nextToken
+            const results = (await API.graphql(
+                graphqlOperation(listPhotosByAlbum, queryArgs),
+            )) as GraphQLResult<ListPhotosByAlbumQuery>
+            setPhotos((p) => p.concat(results.data.listPhotosByAlbum.items))
+            setNextPhotosToken(results.data.listPhotosByAlbum.nextToken)
+            setFetchingPhotos(false)
+        }
         asyncFunc()
-        //console.log('album2')
-        //console.log(album)
     }, [])
-    /*
-    useEffect(() => {
-        if (album != null) {
-            fetchNextPhotos()
-        }
-    }, [album])
-    */
-    const fetchNextPhotos = async () => {
-        const FETCH_LIMIT = 20
-        setFetchingPhotos(true)
-        const queryArgs = {
-            albumId: album.id,
-            limit: FETCH_LIMIT,
-            nextToken: nextPhotosToken,
-        }
-        if (!queryArgs.nextToken) delete queryArgs.nextToken
-        const results = (await API.graphql(
-            graphqlOperation(listPhotosByAlbum, queryArgs),
-        )) as GraphQLResult<ListPhotosByAlbumQuery>
-        //console.log('results data of fetchnextphotos')
-        //console.log(results.data)
-        setPhotos((p) => p.concat(results.data.listPhotosByAlbum.items))
-        setNextPhotosToken(results.data.listPhotosByAlbum.nextToken)
-        setFetchingPhotos(false)
-    }
 
     return !album ? (
         <></>
