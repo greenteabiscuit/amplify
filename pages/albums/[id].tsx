@@ -43,24 +43,26 @@ const AlbumsShow = () => {
     const { id } = router.query
     const asyncFunc = async () => {
         const result = (await API.graphql(graphqlOperation(getAlbum, { id }))) as GraphQLResult<GetAlbumQuery>
-        console.log(result)
         setAlbum(result[0])
-        console.log('album')
-        console.log(album)
+        //console.log('album')
+        //console.log(album)
+        if (album != null) {
+            fetchNextPhotos()
+        }
         //fetchNextPhotos()
     }
     useEffect(() => {
         asyncFunc()
-        console.log('album2')
-        console.log(album)
+        //console.log('album2')
+        //console.log(album)
     }, [])
-
+    /*
     useEffect(() => {
         if (album != null) {
             fetchNextPhotos()
         }
     }, [album])
-
+    */
     const fetchNextPhotos = async () => {
         const FETCH_LIMIT = 20
         setFetchingPhotos(true)
@@ -73,8 +75,8 @@ const AlbumsShow = () => {
         const results = (await API.graphql(
             graphqlOperation(listPhotosByAlbum, queryArgs),
         )) as GraphQLResult<ListPhotosByAlbumQuery>
-        console.log('results data of fetchnextphotos')
-        console.log(results.data)
+        //console.log('results data of fetchnextphotos')
+        //console.log(results.data)
         setPhotos((p) => p.concat(results.data.listPhotosByAlbum.items))
         setNextPhotosToken(results.data.listPhotosByAlbum.nextToken)
         setFetchingPhotos(false)
