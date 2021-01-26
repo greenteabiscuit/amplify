@@ -8,15 +8,13 @@ import Grid from '@material-ui/core/Grid'
 import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
-import { ListTodosQuery, ListAlbumsQuery } from '../src/graphql/API'
-import { listTodos, listAlbums } from '../src/graphql/queries'
+import { ListAlbumsQuery } from '../src/graphql/API'
+import { listAlbums } from '../src/graphql/queries'
 import { onCreateAlbum } from '../src/graphql/subscriptions'
 
-import Todo from '../src/component/Todo'
 import AlbumList from '../src/component/AlbumList'
 
 import { useRecoilState } from 'recoil'
-import todosState from '../src/store/todos'
 import albumState from '../src/store/albums'
 
 Amplify.configure({
@@ -34,13 +32,9 @@ Amplify.configure({
 })
 
 const TodosIndex = () => {
-    const [todos, setTodos] = useRecoilState(todosState)
     const [albums, setAlbums] = useRecoilState(albumState)
     useEffect(() => {
         const asyncFunc = async () => {
-            const result = (await API.graphql(graphqlOperation(listTodos))) as GraphQLResult<ListTodosQuery>
-            setTodos(result.data.listTodos.items)
-
             const albumResult = (await API.graphql(graphqlOperation(listAlbums))) as GraphQLResult<ListAlbumsQuery>
             setAlbums(albumResult.data.listAlbums.items)
         }
@@ -52,20 +46,15 @@ const TodosIndex = () => {
             <AmplifySignOut />
             <Grid container direction="column" spacing={2}>
                 <Grid item md={6}>
-                    <h1>Todos</h1>
+                    <h1>Albums</h1>
                 </Grid>
                 <Grid item md={6}>
-                    <Link href="/todos/new">
+                    <Link href="/albums/new">
                         <Button component="a" variant="contained" color="primary">
                             New
                         </Button>
                     </Link>
                 </Grid>
-            </Grid>
-            <Grid container direction="column" spacing={2}>
-                {todos.map((todo) => (
-                    <Todo key={todo.id} todo={todo} />
-                ))}
             </Grid>
             <Grid container direction="column" spacing={2}>
                 {albums.map((album) => (
