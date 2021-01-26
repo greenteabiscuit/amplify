@@ -45,7 +45,6 @@ const AlbumList: FC<Props> = ({ album }) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <FormControlLabel control={<Checkbox color="primary" />} label="Done" />
                     <Button variant="contained" color="secondary" onClick={onArchive}>
                         Archive
                     </Button>
