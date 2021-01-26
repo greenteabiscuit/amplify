@@ -8,6 +8,7 @@ type props = {
 }
 
 const PhotosList = memo(({ photos }: props) => {
+    console.log('photos')
     console.log(photos)
     Amplify.configure({
         aws_project_region: process.env.project_region,
