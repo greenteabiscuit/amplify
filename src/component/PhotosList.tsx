@@ -8,8 +8,6 @@ type props = {
 }
 
 const PhotosList = memo(({ photos }: props) => {
-    console.log('photos')
-    console.log(photos)
     Amplify.configure({
         aws_project_region: process.env.project_region,
         aws_cognito_identity_pool_id: process.env.cognito_identity_pool_id,
@@ -24,8 +22,6 @@ const PhotosList = memo(({ photos }: props) => {
         aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
     })
     const PhotoItems = (props) => {
-        console.log('props')
-        console.log(props)
         return props.photos.map((photo) => (
             <S3Image
                 key={photo.thumbnail.key}

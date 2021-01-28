@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Amplify from 'aws-amplify'
 import { AmplifyAuthenticator, AmplifySignUp, AmplifySignOut } from '@aws-amplify/ui-react'
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
-import awsconfig from '../src/aws-exports'
 
 import Link from 'next/link'
 import Button from '@material-ui/core/Button'
@@ -32,11 +31,9 @@ Amplify.configure({
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
-Amplify.configure(awsconfig)
-
 const AuthStateApp = () => {
-    const [authState, setAuthState] = React.useState()
-    const [user, setUser] = React.useState()
+    const [authState, setAuthState] = React.useState(null)
+    const [user, setUser] = React.useState(null)
     const [albums, setAlbums] = useRecoilState(albumState)
 
     useEffect(() => {

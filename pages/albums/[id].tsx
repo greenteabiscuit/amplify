@@ -57,9 +57,7 @@ const AlbumsShow = () => {
             const results = (await API.graphql(
                 graphqlOperation(listPhotosByAlbum, queryArgs),
             )) as GraphQLResult<ListPhotosByAlbumQuery>
-            console.log('before setphotos')
             setPhotos((p) => p.concat(results.data.listPhotosByAlbum.items))
-            console.log('after setphotos')
             setNextPhotosToken(results.data.listPhotosByAlbum.nextToken)
             setFetchingPhotos(false)
         }
