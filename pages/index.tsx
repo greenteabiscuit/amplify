@@ -1,13 +1,14 @@
-import React from 'react'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
+import Amplify from 'aws-amplify'
+import { AmplifyAuthenticator, AmplifySignUp, AmplifySignOut } from '@aws-amplify/ui-react'
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
+import awsconfig from '../src/aws-exports'
 
 import Link from 'next/link'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 
-import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import { ListAlbumsQuery } from '../src/graphql/API'
 import { listAlbums } from '../src/graphql/queries'
 import { onCreateAlbum } from '../src/graphql/subscriptions'
@@ -31,8 +32,13 @@ Amplify.configure({
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
-const TodosIndex = () => {
+Amplify.configure(awsconfig)
+
+const AuthStateApp = () => {
+    const [authState, setAuthState] = React.useState()
+    const [user, setUser] = React.useState()
     const [albums, setAlbums] = useRecoilState(albumState)
+
     useEffect(() => {
         const asyncFunc = async () => {
             const albumResult = (await API.graphql(graphqlOperation(listAlbums))) as GraphQLResult<ListAlbumsQuery>
@@ -41,8 +47,15 @@ const TodosIndex = () => {
         asyncFunc()
     }, [])
 
-    return (
-        <>
+    useEffect(() => {
+        return onAuthUIStateChange((nextAuthState, authData) => {
+            setAuthState(nextAuthState)
+            setUser(authData)
+        })
+    }, [])
+
+    return authState === AuthState.SignedIn && user ? (
+        <div className="App">
             <AmplifySignOut />
             <Grid container direction="column" spacing={2}>
                 <Grid item md={6}>
@@ -61,8 +74,15 @@ const TodosIndex = () => {
                     <AlbumList key={album.id} album={album} />
                 ))}
             </Grid>
-        </>
+        </div>
+    ) : (
+        <AmplifyAuthenticator>
+            <AmplifySignUp
+                slot="sign-up"
+                formFields={[{ type: 'username' }, { type: 'password' }, { type: 'email' }]}
+            />
+        </AmplifyAuthenticator>
     )
 }
 
-export default withAuthenticator(TodosIndex)
+export default AuthStateApp
