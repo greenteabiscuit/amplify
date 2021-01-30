@@ -130,6 +130,7 @@ export type PhotoS3InfoInput = {
 export type ModelPhotoConditionInput = {
   albumId?: ModelIDInput | null,
   bucket?: ModelStringInput | null,
+  labels?: ModelStringInput | null,
   and?: Array< ModelPhotoConditionInput | null > | null,
   or?: Array< ModelPhotoConditionInput | null > | null,
   not?: ModelPhotoConditionInput | null,
@@ -157,6 +158,7 @@ export type UpdatePhotoInput = {
   bucket?: string | null,
   fullsize?: PhotoS3InfoInput | null,
   thumbnail?: PhotoS3InfoInput | null,
+  labels?: Array< string | null > | null,
 };
 
 export type DeletePhotoInput = {
@@ -186,6 +188,7 @@ export type ModelPhotoFilterInput = {
   id?: ModelIDInput | null,
   albumId?: ModelIDInput | null,
   bucket?: ModelStringInput | null,
+  labels?: ModelStringInput | null,
   and?: Array< ModelPhotoFilterInput | null > | null,
   or?: Array< ModelPhotoFilterInput | null > | null,
   not?: ModelPhotoFilterInput | null,
@@ -194,6 +197,69 @@ export type ModelPhotoFilterInput = {
 export enum ModelSortDirection {
   ASC = "ASC",
   DESC = "DESC",
+}
+
+
+export type SearchablePhotoFilterInput = {
+  id?: SearchableIDFilterInput | null,
+  albumId?: SearchableIDFilterInput | null,
+  bucket?: SearchableStringFilterInput | null,
+  labels?: SearchableStringFilterInput | null,
+  and?: Array< SearchablePhotoFilterInput | null > | null,
+  or?: Array< SearchablePhotoFilterInput | null > | null,
+  not?: SearchablePhotoFilterInput | null,
+};
+
+export type SearchableIDFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableStringFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchablePhotoSortInput = {
+  field?: SearchablePhotoSortableFields | null,
+  direction?: SearchableSortDirection | null,
+};
+
+export enum SearchablePhotoSortableFields {
+  id = "id",
+  albumId = "albumId",
+  bucket = "bucket",
+  labels = "labels",
+}
+
+
+export enum SearchableSortDirection {
+  asc = "asc",
+  desc = "desc",
 }
 
 
@@ -327,13 +393,16 @@ export type CreatePhotoMutation = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {
@@ -365,13 +434,16 @@ export type UpdatePhotoMutation = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {
@@ -403,13 +475,16 @@ export type DeletePhotoMutation = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {
@@ -520,13 +595,16 @@ export type GetPhotoQuery = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {
@@ -556,6 +634,7 @@ export type ListPhotosQuery = {
       id: string,
       albumId: string,
       bucket: string,
+      labels: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       owner: string | null,
@@ -580,11 +659,38 @@ export type ListPhotosByAlbumQuery = {
       id: string,
       albumId: string,
       bucket: string,
+      labels: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       owner: string | null,
     } | null > | null,
     nextToken: string | null,
+  } | null,
+};
+
+export type SearchPhotosQueryVariables = {
+  filter?: SearchablePhotoFilterInput | null,
+  sort?: SearchablePhotoSortInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  from?: number | null,
+};
+
+export type SearchPhotosQuery = {
+  searchPhotos:  {
+    __typename: "SearchablePhotoConnection",
+    items:  Array< {
+      __typename: "Photo",
+      id: string,
+      albumId: string,
+      bucket: string,
+      labels: Array< string | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      owner: string | null,
+    } | null > | null,
+    nextToken: string | null,
+    total: number | null,
   } | null,
 };
 
@@ -699,13 +805,16 @@ export type OnCreatePhotoSubscription = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {
@@ -736,13 +845,16 @@ export type OnUpdatePhotoSubscription = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {
@@ -773,13 +885,16 @@ export type OnDeletePhotoSubscription = {
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
     thumbnail:  {
       __typename: "PhotoS3Info",
       key: string,
       width: number,
       height: number,
+      labels: Array< string | null > | null,
     },
+    labels: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     album:  {

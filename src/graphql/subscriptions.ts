@@ -93,12 +93,15 @@ export const onCreatePhoto = /* GraphQL */ `
         key
         width
         height
+        labels
       }
       thumbnail {
         key
         width
         height
+        labels
       }
+      labels
       createdAt
       updatedAt
       album {
@@ -123,12 +126,15 @@ export const onUpdatePhoto = /* GraphQL */ `
         key
         width
         height
+        labels
       }
       thumbnail {
         key
         width
         height
+        labels
       }
+      labels
       createdAt
       updatedAt
       album {
@@ -153,12 +159,15 @@ export const onDeletePhoto = /* GraphQL */ `
         key
         width
         height
+        labels
       }
       thumbnail {
         key
         width
         height
+        labels
       }
+      labels
       createdAt
       updatedAt
       album {

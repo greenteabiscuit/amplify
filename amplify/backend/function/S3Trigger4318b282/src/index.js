@@ -20,6 +20,7 @@ const AUTH_TYPE = require('aws-appsync').AUTH_TYPE
 const AWSAppSyncClient = require('aws-appsync').default
 const uuidv4 = require('uuid/v4')
 const gql = require('graphql-tag')
+const Rekognition = new AWS.Rekognition()
 
 /*
 Note: Sharp requires native extensions to be installed in a way that is compatible
@@ -34,6 +35,22 @@ const THUMBNAIL_WIDTH = parseInt(process.env.THUMBNAIL_WIDTH || 80, 10)
 const THUMBNAIL_HEIGHT = parseInt(process.env.THUMBNAIL_HEIGHT || 80, 10)
 
 let client = null
+
+async function getLabelNames(bucketName, key) {
+    let params = {
+        Image: {
+            S3Object: {
+                Bucket: bucketName,
+                Name: key,
+            },
+        },
+        MaxLabels: 50,
+        MinConfidence: 70,
+    }
+    const detectionResult = await Rekognition.detectLabels(params).promise()
+    const labelNames = detectionResult.Labels.map((l) => l.Name.toLowerCase())
+    return labelNames
+}
 
 async function storePhotoInfo(item) {
     console.log('storePhotoItem', JSON.stringify(item))
@@ -151,12 +168,15 @@ async function processRecord(record) {
     console.log('resize')
     const sizes = await resize(originalPhoto.Body, bucketName, key)
     console.log('sizes', JSON.stringify(sizes))
+    const labelNames = await getLabelNames(bucketName, sizes.fullsize.key)
+    console.log(labelNames)
     const id = uuidv4()
     const item = {
         id: id,
         owner: metadata.owner,
         albumId: metadata.albumid,
         bucket: bucketName,
+        labels: labelNames,
         thumbnail: {
             width: sizes.thumbnail.width,
             height: sizes.thumbnail.height,
