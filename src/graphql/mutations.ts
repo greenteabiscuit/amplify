@@ -122,6 +122,7 @@ export const createPhoto = /* GraphQL */ `
         height
         labels
       }
+      labels
       createdAt
       updatedAt
       album {
