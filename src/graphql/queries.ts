@@ -140,6 +140,11 @@ export const listPhotosByAlbum = /* GraphQL */ `
         albumId
         bucket
         labels
+        thumbnail {
+          key
+          width
+          height
+        }
         createdAt
         updatedAt
         owner
