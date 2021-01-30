@@ -42,6 +42,7 @@ input CreatePhotoInput {
 	id: ID
     owner: String
 	albumId: ID!
+    labels: [String]
 	bucket: String!
 	fullsize: PhotoS3InfoInput!
 	thumbnail: PhotoS3InfoInput!

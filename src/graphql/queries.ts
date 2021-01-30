@@ -173,6 +173,12 @@ export const searchPhotos = /* GraphQL */ `
         albumId
         bucket
         labels
+        thumbnail {
+          key
+          width
+          height
+          labels
+        }
         createdAt
         updatedAt
         owner

@@ -11,6 +11,7 @@ import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { ListAlbumsQuery } from '../src/graphql/API'
 import { listAlbums } from '../src/graphql/queries'
 import { onCreateAlbum } from '../src/graphql/subscriptions'
+import Search from '../src/component/Search'
 
 import AlbumList from '../src/component/AlbumList'
 
@@ -54,6 +55,7 @@ const AuthStateApp = () => {
     return authState === AuthState.SignedIn && user ? (
         <div className="App">
             <AmplifySignOut />
+            <Search />
             <Grid container direction="column" spacing={2}>
                 <Grid item md={6}>
                     <h1>Albums</h1>

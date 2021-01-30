@@ -157,6 +157,7 @@ async function processRecord(record) {
         return
     }
     if (!key.includes('upload/')) {
+        console.log(key)
         console.log('Does not look like an upload from user')
         return
     }

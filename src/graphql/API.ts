@@ -116,6 +116,7 @@ export type CreatePhotoInput = {
   id?: string | null,
   owner?: string | null,
   albumId: string,
+  labels?: Array< string | null > | null,
   bucket: string,
   fullsize: PhotoS3InfoInput,
   thumbnail: PhotoS3InfoInput,
