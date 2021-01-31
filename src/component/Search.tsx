@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import API, { graphqlOperation } from '@aws-amplify/api'
 import { Header, Input, Segment } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
 
 import * as queries from '../graphql/queries'
 import { SearchPhotosQuery } from '../graphql/API'
