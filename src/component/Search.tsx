@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import API, { graphqlOperation } from '@aws-amplify/api'
 import { Header, Input, Segment } from 'semantic-ui-react'
@@ -8,13 +8,17 @@ import { SearchPhotosQuery } from '../graphql/API'
 import { GraphQLResult } from '@aws-amplify/api'
 import PhotosList from './PhotosList'
 
-const Search = () => {
+export interface Props {
+    prop?: null
+}
+
+const Search: React.FC<Props> = () => {
     const [photos, setPhotos] = useState([])
     const [label, setLabel] = useState('')
     const [hasResults, setHasResults] = useState(false)
     const [searched, setSearched] = useState(false)
 
-    const getPhotosForLabel = async (e) => {
+    const getPhotosForLabel = async () => {
         setPhotos([])
         const result = (await API.graphql(
             graphqlOperation(queries.searchPhotos, { filter: { labels: { match: label } } }),
