@@ -11,5 +11,7 @@ module.exports = {
         appsync_authenticationType: process.env.appsync_authenticationType,
         user_files_s3_bucket: process.env.user_files_s3_bucket,
         user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
+        mobile_analytics_app_id: process.env.mobile_analytics_app_id,
+        mobile_analytics_app_region: process.env.mobile_analytics_app_region,
     },
 }

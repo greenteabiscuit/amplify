@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Amplify, { Analytics } from 'aws-amplify'
+import Amplify, { Analytics, Auth } from 'aws-amplify'
 import { AmplifyAuthenticator, AmplifySignUp, AmplifySignOut } from '@aws-amplify/ui-react'
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
 
@@ -30,6 +30,8 @@ Amplify.configure({
     aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
     aws_user_files_s3_bucket: process.env.user_files_s3_bucket,
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
+    aws_mobile_analytics_app_id: process.env.mobile_analytics_app_id,
+    aws_mobile_analytics_app_region: process.env.mobile_analytics_app_region,
 })
 
 Analytics.autoTrack('session', {
@@ -47,10 +49,32 @@ Analytics.autoTrack('pageView', {
     },
 })
 
-const AuthStateApp = () => {
+export interface Props {
+    prop?: null
+}
+
+const AuthStateApp: React.FC<Props> = () => {
     const [authState, setAuthState] = React.useState(null)
     const [user, setUser] = React.useState(null)
     const [albums, setAlbums] = useRecoilState(albumState)
+
+    const mappedobjects = (f) => (obj) => Object.keys(obj).reduce((acc, key) => ({ ...acc, [key]: f(obj[key]) }), {})
+    const Arrayofourstrings = (value) => [`${value}`]
+    const mapArrayofourstrings = mappedobjects(Arrayofourstrings)
+
+    async function trackUserIdforPinpoint() {
+        const user = await Auth.currentAuthenticatedUser()
+        const userAttributes = mapArrayofourstrings(user.attributes)
+        Analytics.updateEndpoint({
+            address: user.attributes.email,
+            channelType: 'EMAIL',
+            optOut: 'NONE',
+            userId: user.attributes.sub,
+            userAttributes,
+        })
+    }
+
+    trackUserIdforPinpoint()
 
     useEffect(() => {
         const asyncFunc = async () => {
