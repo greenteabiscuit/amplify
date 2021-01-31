@@ -68,5 +68,11 @@
         }
       ]
     }
+  },
+  "analytics": {
+    "myapp202101": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

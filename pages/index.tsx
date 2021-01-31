@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Amplify from 'aws-amplify'
+import Amplify, { Analytics } from 'aws-amplify'
 import { AmplifyAuthenticator, AmplifySignUp, AmplifySignOut } from '@aws-amplify/ui-react'
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components'
 
@@ -30,6 +30,21 @@ Amplify.configure({
     aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
     aws_user_files_s3_bucket: process.env.user_files_s3_bucket,
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
+})
+
+Analytics.autoTrack('session', {
+    enable: true,
+    provider: 'AWSPinpoint',
+})
+
+Analytics.autoTrack('pageView', {
+    enable: true,
+    eventName: 'pageView',
+    type: 'SPA',
+    provider: 'AWSPinpoint',
+    getUrl: () => {
+        return window.location.origin + window.location.pathname
+    },
 })
 
 const AuthStateApp = () => {
