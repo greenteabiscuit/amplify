@@ -1,3 +1,7 @@
+Deployed here on Amplify: https://main.d2g01ay5jch1ud.amplifyapp.com/
+
+==================================================
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
