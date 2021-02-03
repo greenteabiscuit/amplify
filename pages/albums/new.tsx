@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -10,8 +10,8 @@ import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { CreateAlbumMutation } from '../../src/graphql/API'
 import { createAlbum } from '../../src/graphql/mutations'
-
-import Form from '../../src/component/Form'
+import TextField from '@material-ui/core/TextField'
+import { useForm } from 'react-hook-form'
 
 Amplify.configure({
     aws_project_region: process.env.project_region,
@@ -27,23 +27,37 @@ Amplify.configure({
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
-type albumInput = {
-    name: string
-}
-
 const NewForms = () => {
     const router = useRouter()
+    const [textField, setTextField] = useState('')
+    const { register, errors, reset } = useForm()
 
-    const onSubmitAlbum = async (newAlbum: albumInput) => {
+    const onSubmitAlbum = async () => {
         const albumMutation = (await API.graphql(
             graphqlOperation(createAlbum, {
                 input: {
-                    ...newAlbum,
+                    name: textField,
                     timestamp: Math.floor(Date.now() / 1000),
                 },
             }),
         )) as GraphQLResult<CreateAlbumMutation>
+        reset()
         router.push('/')
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTextField(e.target.value)
+    }
+
+    const errorMessage = (errors, field) => {
+        const message = []
+        if (errors[field]?.type == 'required') {
+            message.push('required')
+        }
+        if (errors[field]?.type == 'maxLength') {
+            message.push('Exceeded 20 characters')
+        }
+        return message.join(', ')
     }
 
     return (
@@ -60,7 +74,24 @@ const NewForms = () => {
                     </Link>
                 </Grid>
             </Grid>
-            <Form onSubmit={onSubmitAlbum} />
+            <Grid container direction="column" spacing={2}>
+                <Grid item md={6}>
+                    <TextField
+                        label="Name"
+                        name="name"
+                        fullWidth
+                        onChange={handleChange}
+                        inputRef={register({ required: true, maxLength: 20 })}
+                        error={Boolean(errors.name)}
+                        helperText={errorMessage(errors, 'name')}
+                    />
+                </Grid>
+                <Grid item md={6}>
+                    <Button type="submit" variant="contained" color="primary" onClick={() => onSubmitAlbum()}>
+                        Save
+                    </Button>
+                </Grid>
+            </Grid>
         </>
     )
 }
