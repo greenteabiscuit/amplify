@@ -27,10 +27,14 @@ Amplify.configure({
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
+type albumInput = {
+    name: string
+}
+
 const NewForms = () => {
     const router = useRouter()
 
-    const onSubmitAlbum = async (newAlbum) => {
+    const onSubmitAlbum = async (newAlbum: albumInput) => {
         const albumMutation = (await API.graphql(
             graphqlOperation(createAlbum, {
                 input: {
