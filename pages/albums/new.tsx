@@ -27,7 +27,7 @@ Amplify.configure({
     aws_user_files_s3_bucket_region: process.env.user_files_s3_bucket_region,
 })
 
-const TodosNew = () => {
+const NewForms = () => {
     const router = useRouter()
 
     const onSubmitAlbum = async (newAlbum) => {
@@ -61,4 +61,4 @@ const TodosNew = () => {
     )
 }
 
-export default withAuthenticator(TodosNew)
+export default withAuthenticator(NewForms)

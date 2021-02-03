@@ -27,7 +27,7 @@ const Copyright = () => {
     )
 }
 
-const Footer = () => {
+const Footer: React.FC = () => {
     const classes = useStyles()
 
     return (
