@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
-import Amplify, { Auth } from 'aws-amplify'
+import Amplify from 'aws-amplify'
 import API, { graphqlOperation, GraphQLResult } from '@aws-amplify/api'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { GetAlbumQuery, ListPhotosByAlbumQuery } from '../../src/graphql/API'
@@ -15,8 +15,6 @@ import S3ImageUpload from '../../src/component/S3ImageUpload'
 import PhotosList from '../../src/component/PhotosList'
 import aState from '../../src/store/album'
 import { useRecoilState } from 'recoil'
-
-//import awsmobile from '../../src/aws-exports'
 
 Amplify.configure({
     aws_project_region: process.env.project_region,
