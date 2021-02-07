@@ -18,6 +18,8 @@ import AlbumList from '../src/component/AlbumList'
 import { useRecoilState } from 'recoil'
 import albumState from '../src/store/albums'
 
+import { gql, useQuery } from '@apollo/client'
+
 Amplify.configure({
     aws_project_region: process.env.project_region,
     aws_cognito_identity_pool_id: process.env.cognito_identity_pool_id,
@@ -53,10 +55,26 @@ export interface Props {
     prop?: null
 }
 
+export const LISTALBUMSQUERY = gql`
+    query ListAlbums {
+        listAlbums {
+            items {
+                id
+                name
+                timestamp
+                createdAt
+                updatedAt
+                owner
+            }
+        }
+    }
+`
+
 const AuthStateApp: React.FC<Props> = () => {
     const [authState, setAuthState] = React.useState(null)
     const [user, setUser] = React.useState(null)
     const [albums, setAlbums] = useRecoilState(albumState)
+    const { loading, error, data } = useQuery(LISTALBUMSQUERY)
 
     const mappedobjects = (f) => (obj) => Object.keys(obj).reduce((acc, key) => ({ ...acc, [key]: f(obj[key]) }), {})
     const Arrayofourstrings = (value) => [`${value}`]
@@ -90,6 +108,9 @@ const AuthStateApp: React.FC<Props> = () => {
             setUser(authData)
         })
     }, [])
+
+    if (loading) return <p>Loading</p>
+    if (error) return <p>error!</p>
 
     return authState === AuthState.SignedIn && user ? (
         <div className="App">

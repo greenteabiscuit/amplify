@@ -9,6 +9,9 @@ import Header from '../src/component/Header'
 import Footer from '../src/component/Footer'
 import { RecoilRoot } from 'recoil'
 import { makeStyles } from '@material-ui/core/styles'
+import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, createHttpLink } from '@apollo/client'
+import { Auth } from 'aws-amplify'
+import { createAuthLink } from 'aws-appsync-auth-link'
 
 const useStyles = makeStyles((_theme) => ({
     root: {
@@ -20,6 +23,22 @@ const useStyles = makeStyles((_theme) => ({
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
     const classes = useStyles()
+    const authConfig = {
+        url: process.env.appsync_graphqlEndpoint,
+        region: process.env.appsync_region,
+        auth: {
+            type: 'AMAZON_COGNITO_USER_POOLS',
+            jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
+        },
+    }
+    const link = ApolloLink.from([
+        (createAuthLink(authConfig) as unknown) as ApolloLink,
+        createHttpLink({ uri: authConfig.url }),
+    ])
+    const client = new ApolloClient({
+        link,
+        cache: new InMemoryCache(),
+    })
 
     return (
         <>
@@ -28,16 +47,18 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
                     <title>Up</title>
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-                <ThemeProvider theme={theme}>
-                    <div className={classes.root}>
-                        <CssBaseline />
-                        <Header />
-                        <Container>
-                            <Component {...pageProps} />
-                        </Container>
-                        <Footer />
-                    </div>
-                </ThemeProvider>
+                <ApolloProvider client={client}>
+                    <ThemeProvider theme={theme}>
+                        <div className={classes.root}>
+                            <CssBaseline />
+                            <Header />
+                            <Container>
+                                <Component {...pageProps} />
+                            </Container>
+                            <Footer />
+                        </div>
+                    </ThemeProvider>
+                </ApolloProvider>
             </RecoilRoot>
         </>
     )
